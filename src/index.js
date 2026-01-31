@@ -7,21 +7,23 @@ textarea.addEventListener("paste", (evt) => {
   const arr = pastedText
     .split("\n")
     .map((line) => {
-      let testReference = line.toLowerCase();
+      let tr = line.toLowerCase();
 
       line.trim().replaceAll(" ", "");
 
       if (!line.includes("/")) {
         line = "";
       }
-      if (!testReference.includes("config") && !testReference.includes("dam")) {
+
+
+      if (!tr.includes("config") && !tr.includes("dam")) {
         line = line.replace(".html", "/jcr:content");
         line = line.replace(".htm", "/jcr:content");
       }
 
       if (
-        testReference.includes("content/") &&
-        testReference.includes("dam/")
+        tr.includes("content/") &&
+        tr.includes("dam/")
       ) {
         const startContentIndex = line.indexOf("content/");
 
@@ -40,13 +42,32 @@ textarea.addEventListener("paste", (evt) => {
         if (startDamIndex !== -1) {
           line = line.substring(startDamIndex);
         }
+
+        //fix dam being at the beginning of the path
+        if (line.startsWith("dam/")) {
+          line = `/content/${line}`;
+        }
+
       }
 
+      if(!tr.includes('content/') && !tr.includes('dam/')) {
+        line = "";
+      }
+
+      
+
       line = line.replace("config.html#", "config/jcr:content/sling:configs");
+      line = line.replace("config.html", "config/jcr:content/sling:configs");
 
       if (line.length !== 0 && !line.startsWith("/")) {
         line = `/${line}`;
       }
+
+      
+
+
+
+
 
       //line = line.replace("/content/", "/content/");
       //line = line.replace("/dam/", "/dam/");
