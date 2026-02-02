@@ -54,7 +54,7 @@ textarea.addEventListener("paste", (evt) => {
         line = "";
       }
 
-      line.replace('/cspCaConfig', '');
+      line = line.replace('/cspCaConfig', '');
 
       line = line.replace("config.html#", "config/jcr:content/sling:configs");
       line = line.replace("config.html", "config/jcr:content/sling:configs");
